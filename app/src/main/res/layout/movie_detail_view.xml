@@ -6,7 +6,7 @@
     tools:context="br.com.thaislisboa.popularmovies.MovieDetailActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -84,17 +84,17 @@
             android:id="@+id/tv_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:paddingStart="20dp"
             android:text="@string/details" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_margin="20dp"
-            android:paddingStart="20dp"
+            android:background="@drawable/divider"
             android:paddingEnd="0dp"
-            android:background="@drawable/divider" />
+            android:paddingStart="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,19 +103,26 @@
             android:textSize="20sp" />
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-
         </android.support.v7.widget.RecyclerView>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/divider"
+            android:paddingEnd="0dp"
+            android:paddingStart="20dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_media_play"
-            android:contentDescription="play trailers"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
 
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 </ScrollView>

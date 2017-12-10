@@ -12,11 +12,17 @@ public class Trailer implements Serializable{
         this.keyYouTube = keyYouTube;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
     public String getKeyYouTube() {
         return keyYouTube;
+    }
+
+    public String getYouTube(){
+        return "http://www.youtube.com/watch?v=".concat(getKeyYouTube());
+
     }
 }

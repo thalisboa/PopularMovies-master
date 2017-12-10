@@ -36,7 +36,6 @@ import br.com.thaislisboa.popularmovies.domain.model.Movie;
 public class MainActivity extends AppCompatActivity {
 
     private List<Movie> movies;
-
     private RecyclerView mRecyclerView;
     private String appKey;
 
@@ -68,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateList() {
+    private void updateList()
+    {
         updateList(null);
     }
 
@@ -215,10 +215,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, MovieDetailActivity.class);
 
                 i.putExtra("movie", movie);
-
                 startActivity(i);
             });
         }
+
 
         @Override
         public int getItemCount() {

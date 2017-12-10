@@ -13,6 +13,7 @@ public class Movie implements Serializable {
     private String overview;
     private String date;
     private ArrayList<Trailer> trailers;
+    public ArrayList<Review> reviews;
 
     public Movie(long id, boolean video, double voteAverage,
                  String title, String poster, String backdrop, String overview, String date) {
@@ -25,6 +26,7 @@ public class Movie implements Serializable {
         this.overview = overview;
         this.date = date;
         this.trailers = new ArrayList<>();
+        this.reviews = new ArrayList<>();
     }
 
     public long getId() {
@@ -68,13 +70,44 @@ public class Movie implements Serializable {
         return date[0];
     }
 
-    public void addTrailer(String name,String keyYouTube){
-        getTrailers().add(new Trailer(name,keyYouTube));
+    public void addTrailer(String name, String keyYouTube) {
+        getTrailers().add(new Trailer(name, keyYouTube));
+    }
+
+
+    public String getTrailerYoutube(int position) {
+        Trailer t = getTrailers().get(position);
+
+
+        if (t == null) {
+            return "";
+
+        } else {
+
+            return t.getYouTube();
+        }
+
     }
 
     public ArrayList<Trailer> getTrailers() {
         return trailers;
     }
+
+    public String getTrailerName(int position) {
+        Trailer t = getTrailers().get(position);
+
+        if (t == null) {
+            return "";
+        } else {
+            return t.getName();
+        }
+    }
+
+    public int getTrailersSize() {
+
+        return getTrailers().size();
+    }
+
 
     @Override
     public String toString() {
@@ -87,5 +120,42 @@ public class Movie implements Serializable {
                 ", overview='" + overview + '\'' +
                 ", date='" + date + '\'' +
                 '}';
+    }
+
+
+//review
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
+
+    }
+
+    public void addReview(String name, String comment) {
+        getReviews().add(new Review(name, comment));
+    }
+
+    public String getReviewName(int position) {
+        Review r = getReviews().get(position);
+
+        if (r == null) {
+            return "";
+        } else {
+            return r.getName();
+        }
+    }
+
+    public String getReviewComment(int position) {
+        Review r = getReviews().get(position);
+
+        if (r == null) {
+            return "";
+        } else {
+            return r.getComment();
+        }
+    }
+
+
+    public int getReviewsSize() {
+        return getReviews().size();
     }
 }
