@@ -1,5 +1,6 @@
 package br.com.thaislisboa.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +51,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         TextView mYear = findViewById(R.id.tv_year);
         TextView mDetails = findViewById(R.id.tv_details);
         TextView mGrade = findViewById(R.id.tv_grade);
+        ImageView mStar = findViewById(R.id.iv_star);
 
         mTitle.setText(movie.getTitle());
         Picasso.with(this).load(movie.getPoster()).into(mPicture);
@@ -61,8 +64,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         mRecyclerViewReview = findViewById(R.id.rv_reviews);
 
         mRecyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this));
-
         mRecyclerViewReview.setLayoutManager(new LinearLayoutManager(this));
+
+        mRecyclerViewTrailer.setNestedScrollingEnabled(false);
+        mRecyclerViewReview.setNestedScrollingEnabled(false);
 
         try {
 
@@ -76,7 +81,27 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         new TrailerAsyncTask().execute(movie);
         new ReviewAsyncTask().execute(movie);
-    }
+
+
+        //Verificar
+        mStar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                //Quando clicar aqui a estrela habilitar , vou pegar as informacoes principais dos movies e passar para o contect resolver
+
+               // if (!mStar.setClickable(true)) {
+
+                    Toast.makeText(Context.this, "You are removing your movie in your Favorite List", Toast.LENGTH_LONG)
+
+
+                } if(mStar.OnClickListener(false)){
+
+                Toast.makeText(Context.this, "You are adding your movie in your Favorite List", Toast.LENGTH_LONG);
+
+
+            }
 
     class TrailerAsyncTask extends AsyncTask<Movie, Movie, Movie> {
 
@@ -267,5 +292,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         public int getItemCount() {
             return movie.getReviewsSize();
         }
-    }
+
+}
 }

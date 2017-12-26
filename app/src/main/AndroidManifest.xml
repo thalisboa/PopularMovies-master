@@ -26,6 +26,10 @@
         <activity
             android:name=".MovieDetailActivity"
             android:label="@string/app_name2" />
+        <provider
+            android:authorities="br.com.thaislisboa.popularmovies"
+            android:name="br.com.thaislisboa.popularmovies.domain.data.TaskContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

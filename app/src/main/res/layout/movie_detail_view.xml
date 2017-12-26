@@ -23,6 +23,7 @@
             android:paddingTop="20dp"
             android:text="Title"
             android:textColor="@android:color/white"
+            android:onClick="onClickAddFavorite"
             android:textSize="30sp" />
 
 
@@ -70,12 +71,12 @@
                     android:text=""
                     android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/btn_mk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/iv_star"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:paddingTop="2dp"
-                    android:text="@string/mark_fav"
+                    android:src="@drawable/star"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -100,13 +101,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trailers:"
-            android:textSize="20sp" />
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_trailers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
         </android.support.v7.widget.RecyclerView>
 
         <TextView
@@ -117,10 +120,20 @@
             android:paddingEnd="0dp"
             android:paddingStart="20dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reviews"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_reviews"
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
 

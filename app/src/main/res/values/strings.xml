@@ -3,7 +3,9 @@
     <string name="app_name2">MovieDetail</string>
     <string name="sort_mostpopular">Sort by Most Popular</string>
     <string name="sort_by_rated">Sort by Top Rated</string>
+    <string name="sort_by_favorite">Sort by Top Favorite</string>
     <string name="mark_fav">Mark as Favorite</string>
     <string name="details">details</string>
     <string name="minutes">120min</string>
+    <string name="reviews">Reviews:</string>
 </resources>

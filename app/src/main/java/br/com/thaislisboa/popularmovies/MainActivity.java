@@ -36,6 +36,7 @@ import br.com.thaislisboa.popularmovies.domain.model.Movie;
 public class MainActivity extends AppCompatActivity {
 
     private List<Movie> movies;
+    //private List<Movie> favorite;
     private RecyclerView mRecyclerView;
     private String appKey;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
             Bundle b = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA).metaData;
             appKey = b.getString("appkey");
+
             mRecyclerView = findViewById(R.id.rv_main);
             int spanCount = getResources().getConfiguration().orientation;
 
@@ -111,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.action2) {
                 fetchTopRated();
             }
+            if (id == R.id.favorite){
+
+            }
         } catch (Exception cause) {
             Log.e("", cause.getMessage(), cause);
         }
@@ -124,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
     private void fetchMostPopular() throws Exception {
         updateList("popular");
     }
+
+    private void fetchFavorite() throws Exception {
+        updateList("favorite");
+    }
+
 
     class MovieAsyncTask extends AsyncTask<String, Movie, List<Movie>> {
 
