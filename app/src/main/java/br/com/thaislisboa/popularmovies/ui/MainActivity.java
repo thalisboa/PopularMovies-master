@@ -1,4 +1,4 @@
-package br.com.thaislisboa.popularmovies;
+package br.com.thaislisboa.popularmovies.ui;
 
 
 import android.content.Intent;
@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import br.com.thaislisboa.popularmovies.R;
 import br.com.thaislisboa.popularmovies.domain.model.Movie;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,8 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateList()
-    {
+    private void updateList() {
         updateList(null);
     }
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.action2) {
                 fetchTopRated();
             }
-            if (id == R.id.favorite){
+            if (id == R.id.favorite) {
 
             }
         } catch (Exception cause) {

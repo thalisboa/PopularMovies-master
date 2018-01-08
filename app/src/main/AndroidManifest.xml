@@ -16,7 +16,7 @@
             android:name="appkey"
             android:value="14d43f5bcd3f9f5bb70c3ff02b8ad098" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,11 +24,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MovieDetailActivity"
+            android:name=".ui.MovieDetailActivity"
             android:label="@string/app_name2" />
         <provider
+            android:name="br.com.thaislisboa.popularmovies.domain.data.MovieContentProvider"
             android:authorities="br.com.thaislisboa.popularmovies"
-            android:name="br.com.thaislisboa.popularmovies.domain.data.TaskContentProvider"
             android:exported="false"/>
     </application>
 
