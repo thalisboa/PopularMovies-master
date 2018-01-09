@@ -22,7 +22,9 @@ public class MovieDbHelper extends SQLiteOpenHelper{
                 MovieContract.MovieEntry._ID                + " INTEGER PRIMARY KEY, " +
                 MovieContract.MovieEntry.COLUMN_MOVIE_ID + " INTEGER, " +
                 MovieContract.MovieEntry.COLUMN_TITLE + " STRING, " +
-                MovieContract.MovieEntry.COLUMN_POSTER   + " BLOB );";
+                MovieContract.MovieEntry.COLUMN_VOTEAVERANGE+ " INTEGER, " +
+                MovieContract.MovieEntry.COLUMN_DATE+ " STRING, " +
+                MovieContract.MovieEntry.COLUMN_POSTER   + " STRING );";
 
         db.execSQL(CREATE_TABLE);
 

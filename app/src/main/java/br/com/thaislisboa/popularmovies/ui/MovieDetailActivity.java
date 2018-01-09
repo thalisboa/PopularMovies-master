@@ -1,5 +1,6 @@
 package br.com.thaislisboa.popularmovies.ui;
 
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -23,6 +25,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 import br.com.thaislisboa.popularmovies.R;
+import br.com.thaislisboa.popularmovies.domain.data.MovieContract;
 import br.com.thaislisboa.popularmovies.domain.model.Movie;
 import br.com.thaislisboa.popularmovies.ui.adapter.ReviewAdapter;
 import br.com.thaislisboa.popularmovies.ui.adapter.TrailerAdapter;
@@ -76,21 +79,37 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         }
 
+
         new TrailerAsyncTask().execute(movie);
         new ReviewAsyncTask().execute(movie);
     }
 
+
     public void addMovieToFavorites(View view) {
 
-        // Get the movie
+        movie = (Movie) getIntent().getSerializableExtra("movie");
 
         // Put the movie's details inside the ContentValues
 
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_POSTER, movie.getPoster());
+
         // Get my provider via ContentResolver and CONTENT_URI
+
+        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
 
         // Call method insert from provider passing the content values
 
+
         // if everything is ok, show a toast.
+        if (uri != null) {
+            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+
+
+        }
+        finish();
 
     }
 

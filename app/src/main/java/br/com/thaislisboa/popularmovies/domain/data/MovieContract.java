@@ -38,11 +38,14 @@ public class MovieContract  {
         public static final String COLUMN_MOVIE_ID = "id_movie";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_POSTER = "poster";
+        public static final String COLUMN_VOTEAVERANGE = "vote";
+        public static final String COLUMN_DATE = "date";
+
 
 
         //This is an array containing all the column headers in the terms table.
         public static final String[] COLUMNS =
-                {COLUMN_MOVIE_ID, COLUMN_TITLE, COLUMN_POSTER};
+                {COLUMN_MOVIE_ID, COLUMN_TITLE, COLUMN_POSTER,COLUMN_VOTEAVERANGE,COLUMN_DATE };
 
 
         // This method creates a {@link Uri} for a single term, referenced by id.

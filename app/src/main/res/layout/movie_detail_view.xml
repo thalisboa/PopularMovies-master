@@ -73,11 +73,10 @@
 
                 <Button
                     android:id="@+id/favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/off"
-                    android:background="#00ffffff"
-                    android:onClick="addMovie"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/onpressed"
+                    android:onClick="addMovieToFavorites"/>
 
             </LinearLayout>
         </LinearLayout>
