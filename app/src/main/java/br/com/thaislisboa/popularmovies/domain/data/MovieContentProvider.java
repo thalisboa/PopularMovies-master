@@ -55,14 +55,14 @@ public class MovieContentProvider extends ContentProvider {
             // Query for the tasks directory
             case MOVIES:  //quero que retorne apenas o poster
                 retCursor = db.query(MovieContract.MovieEntry.MOVIE_TABLE,
-                        projection,
+                        projection, //filter columns
                         selection,
                         selectionArgs,
                         null,
                         null,
-                        sortOrder);
+                        null);
                 break;
-            case MOVIE_WITH_ID:  //details do movie
+            case MOVIE_WITH_ID:  //details of movie
                 retCursor = db.query(MovieContract.MovieEntry.MOVIE_TABLE,
                         projection,
                         selection,
