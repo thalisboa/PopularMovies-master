@@ -15,22 +15,24 @@ import br.com.thaislisboa.popularmovies.R;
 import br.com.thaislisboa.popularmovies.domain.data.MovieContract;
 
 
-public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.MovieViewHolder> {
+public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.MovieViewHolder> {
 
     private Cursor mCursor;
     private Context mContext;
     private Object context;
 
-    public CustomCursorAdapter(Context mContext){
+    public MovieCursorAdapter(Context mContext){
         this.mContext = mContext;
 
     }
 
     //param holder The ViewHolder to bind Cursor data to
+
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.main_view,parent,false);
+                .inflate(R.layout.movie_item_view, parent,false);
 
         return new MovieViewHolder(view);
     }

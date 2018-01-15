@@ -35,8 +35,8 @@ import br.com.thaislisboa.popularmovies.R;
 import br.com.thaislisboa.popularmovies.domain.model.Movie;
 
 public class MainActivity extends AppCompatActivity {
-
     private List<Movie> movies;
+
     //private List<Movie> favorite;
     private RecyclerView mRecyclerView;
     private String appKey;
@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
                 fetchTopRated();
             }
             if (id == R.id.favorite) {
-
+                Intent i = new Intent(MainActivity.this, FavoriteMoviesActivity.class);
+                startActivity(i);
             }
         } catch (Exception cause) {
             Log.e("", cause.getMessage(), cause);
@@ -128,10 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchMostPopular() throws Exception {
         updateList("popular");
-    }
-
-    private void fetchFavorite() throws Exception {
-        updateList("favorite");
     }
 
 
@@ -193,13 +190,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
-        MovieViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
 
-    class MovieAdapter extends RecyclerView.Adapter {
+   public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
         private List<Movie> movies;
 
@@ -208,20 +200,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(MainActivity.this)
                     .inflate(R.layout.movie_item_view, parent, false);
             return new MovieViewHolder(view);
+
+            //return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ImageView mImageView = holder.itemView.findViewById(R.id.image);
+        public void onBindViewHolder(MovieViewHolder holder, int position) {
+
             final Movie movie = movies.get(position);
 
-            Picasso.with(MainActivity.this).load(movie.getPoster()).into(mImageView);
+            Picasso.with(MainActivity.this).load(movie.getPoster()).into(holder.mImageView);
 
-            mImageView.setOnClickListener(e -> {
+            holder.mImageView.setOnClickListener(e -> {
+
+                // 1 - Query no provider com todas as colunas
+
+                // 2 - Depois vai criar um objeto Movie (new Movie())
+
+                // 3 - Preencher o Movie com dados que vieram do banco (titulo, id movie, poster, etc, etc
+
+                // 4 - Utilizar o codigo abaixo para abrir os detalhes
+
                 Intent i = new Intent(MainActivity.this, MovieDetailActivity.class);
 
                 i.putExtra("movie", movie);
@@ -229,14 +232,22 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
         @Override
         public int getItemCount() {
 
             return movies.size();
         }
-    }
 
+        class MovieViewHolder extends RecyclerView.ViewHolder {
+
+            ImageView mImageView ;
+
+            MovieViewHolder(View itemView) {
+                super(itemView);
+                mImageView = itemView.findViewById(R.id.image);
+            }
+        }
+    }
 }
 
 

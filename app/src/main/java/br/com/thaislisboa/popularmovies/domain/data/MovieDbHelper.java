@@ -19,7 +19,7 @@ public class MovieDbHelper extends SQLiteOpenHelper{
 
         // Create tasks table (careful to follow SQL formatting rules)
         final String CREATE_TABLE = "CREATE TABLE "  + MovieContract.MovieEntry.MOVIE_TABLE + " (" +
-                MovieContract.MovieEntry._ID                + " INTEGER PRIMARY KEY, " +
+                MovieContract.MovieEntry._ID  + " INTEGER PRIMARY KEY, " +
                 MovieContract.MovieEntry.COLUMN_MOVIE_ID + " INTEGER, " +
                 MovieContract.MovieEntry.COLUMN_TITLE + " STRING, " +
                 MovieContract.MovieEntry.COLUMN_VOTEAVERANGE+ " INTEGER, " +

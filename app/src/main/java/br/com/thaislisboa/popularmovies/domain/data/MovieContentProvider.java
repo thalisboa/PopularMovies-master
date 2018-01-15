@@ -53,9 +53,9 @@ public class MovieContentProvider extends ContentProvider {
         // COMPLETED (3) Query for the tasks directory and write a default case
         switch (match) {
             // Query for the tasks directory
-            case MOVIES:  //quero que retorne apenas o poster
+            case MOVIES:
                 retCursor = db.query(MovieContract.MovieEntry.MOVIE_TABLE,
-                        projection, //filter columns
+                        projection, //filter columns -> pegar o ID e o Poster
                         selection,
                         selectionArgs,
                         null,
