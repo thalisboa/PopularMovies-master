@@ -1,6 +1,7 @@
 package br.com.thaislisboa.popularmovies.ui;
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,7 +13,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,29 +24,31 @@ import br.com.thaislisboa.popularmovies.domain.data.MovieContract;
 import br.com.thaislisboa.popularmovies.ui.adapter.MovieCursorAdapter;
 
 public class FavoriteMoviesActivity extends AppCompatActivity implements
-       LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor> {
 
-
-    private final String TAG = FavoriteMoviesActivity.class.getSimpleName();
 
     public static final String[] MOVIE_LIST_PROJECTION = {
             MovieContract.MovieEntry._ID,
             MovieContract.MovieEntry.COLUMN_MOVIE_ID,
-            //MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_POSTER, //definir apenas o poster e o id
-            //MovieContract.MovieEntry.COLUMN_VOTEAVERANGE,
-            //MovieContract.MovieEntry.COLUMN_DATE,
+            MovieContract.MovieEntry.COLUMN_POSTER
+    };//definir apenas o poster e o id
+    public static final String[] MOVIE_LIST_DETAILS = {
+            MovieContract.MovieEntry._ID,
+            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
+            MovieContract.MovieEntry.COLUMN_TITLE,
+            MovieContract.MovieEntry.COLUMN_POSTER,
+            MovieContract.MovieEntry.COLUMN_VOTEAVERANGE,
+            MovieContract.MovieEntry.COLUMN_DATE
 
     };
-
     public static final int INDEX_MOVIE_ID = 0;
     public static final int COLUMN_TITLE = 1;
     public static final int COLUMN_POSTER = 2;
     public static final int COLUMN_VOTEAVERANGE = 3;
     public static final int COLUMN_DATE = 4;
-
     private static final int ID_MOVIE_LOADER = 20;
-
+    private static final int ID_MOVIE_DETAILS = 10;
+    private final String TAG = FavoriteMoviesActivity.class.getSimpleName();
     private MovieCursorAdapter mMovieAdapter;
     private RecyclerView mRecyclerView;
     private int mPosition = RecyclerView.NO_POSITION;
@@ -104,7 +106,6 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
     }
 
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
 
@@ -113,7 +114,6 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
               /* URI for all rows of weather data in our weather table */
                 Uri moviecQueryUri = MovieContract.MovieEntry.CONTENT_URI;
 
-                //String mdate = MovieContract.MovieEntry.COLUMN_DATE;
 
                 //String selection = MovieContract.MovieEntry.getSqlSelect();
 
@@ -123,6 +123,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
                         null,
                         null,
                         null);
+
 
             default:
                 throw new RuntimeException("Loader not implemented:" + loaderId);
@@ -139,7 +140,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
 
         mRecyclerView.smoothScrollToPosition(mPosition);
 
-       if(data.getCount() != 0) showMovieDataView();
+        if (data.getCount() != 0) showMovieDataView();
     }
 
     @Override
@@ -161,26 +162,32 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
         return true;
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        try {
-            //order it by most popular
-            if (id == R.id.action1) {
-
-            }
-
-            //order it by top rated
-            if (id == R.id.action2) {
-
-            }
-            if (id == R.id.favorite) {
-
-            }
-        } catch (Exception cause) {
-            Log.e("", cause.getMessage(), cause);
+        // order it by most popular
+        if (id == R.id.action1) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra(MainActivity.KEY_SORT_ORDER, MainActivity.SORT_POPULAR);
+            startActivity(i);
+            return true;
         }
-        return true;
+
+        // order it by top rated
+        if (id == R.id.action2) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra(MainActivity.KEY_SORT_ORDER, MainActivity.SORT_TOP_RATED);
+            startActivity(i);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

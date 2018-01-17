@@ -35,34 +35,48 @@ import br.com.thaislisboa.popularmovies.R;
 import br.com.thaislisboa.popularmovies.domain.model.Movie;
 
 public class MainActivity extends AppCompatActivity {
-    private List<Movie> movies;
+
+    public static final String KEY_SORT_ORDER = "key_sort_order";
+    public static final String SORT_POPULAR = "most_popular";
+    public static final String SORT_TOP_RATED = "top_rated";
+
+    private List<Movie> movies = new ArrayList<>();
 
     //private List<Movie> favorite;
     private RecyclerView mRecyclerView;
     private String appKey;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);
 
+        mRecyclerView = findViewById(R.id.rv_main);
+        int spanCount = getResources().getConfiguration().orientation;
+
+        spanCount = spanCount == Configuration.ORIENTATION_PORTRAIT ? 2 : 4;
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
+
         try {
-            movies = savedInstanceState != null ?
-                    (ArrayList) savedInstanceState.getSerializable("movies") :
-                    new ArrayList<>();
 
             Bundle b = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA).metaData;
             appKey = b.getString("appkey");
 
-            mRecyclerView = findViewById(R.id.rv_main);
-            int spanCount = getResources().getConfiguration().orientation;
-
-            spanCount = spanCount == Configuration.ORIENTATION_PORTRAIT ? 2 : 4;
-            mRecyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
-
             if (savedInstanceState == null) {
-                fetchMostPopular();
+
+                String sortOrder = SORT_POPULAR;
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null && bundle.containsKey(KEY_SORT_ORDER)) {
+                    sortOrder = bundle.getString(KEY_SORT_ORDER);
+                }
+                if (SORT_TOP_RATED.equals(sortOrder)) {
+                    fetchTopRated();
+                } else {
+                    fetchMostPopular();
+                }
             } else {
+                movies = (ArrayList) savedInstanceState.getSerializable("movies");
                 updateList();
             }
         } catch (Exception cause) {
@@ -112,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             //order it by top rated
             if (id == R.id.action2) {
                 fetchTopRated();
+
             }
             if (id == R.id.favorite) {
                 Intent i = new Intent(MainActivity.this, FavoriteMoviesActivity.class);
@@ -144,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected List<Movie> doInBackground(String... strings) {
 
-            try {
+           try {
+
                 URL url = new URL(Uri.parse("http://api.themoviedb.org/3/movie/" + strings[0])
                         .buildUpon()
                         .appendQueryParameter("api_key", appKey)
@@ -191,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-   public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
+    public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
         private List<Movie> movies;
 
@@ -204,8 +220,6 @@ public class MainActivity extends AppCompatActivity {
             View view = LayoutInflater.from(MainActivity.this)
                     .inflate(R.layout.movie_item_view, parent, false);
             return new MovieViewHolder(view);
-
-            //return viewHolder;
         }
 
         @Override
@@ -216,17 +230,7 @@ public class MainActivity extends AppCompatActivity {
             Picasso.with(MainActivity.this).load(movie.getPoster()).into(holder.mImageView);
 
             holder.mImageView.setOnClickListener(e -> {
-
-                // 1 - Query no provider com todas as colunas
-
-                // 2 - Depois vai criar um objeto Movie (new Movie())
-
-                // 3 - Preencher o Movie com dados que vieram do banco (titulo, id movie, poster, etc, etc
-
-                // 4 - Utilizar o codigo abaixo para abrir os detalhes
-
                 Intent i = new Intent(MainActivity.this, MovieDetailActivity.class);
-
                 i.putExtra("movie", movie);
                 startActivity(i);
             });
@@ -240,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
         class MovieViewHolder extends RecyclerView.ViewHolder {
 
-            ImageView mImageView ;
+            ImageView mImageView;
 
             MovieViewHolder(View itemView) {
                 super(itemView);
