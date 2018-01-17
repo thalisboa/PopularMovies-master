@@ -16,7 +16,6 @@ public class MovieContract  {
 
     public static final class MovieEntry implements BaseColumns {
 
-
         //* This is the {@link Uri} used to get a full list of terms and definitions.
 
         public static final Uri CONTENT_URI =
@@ -57,4 +56,19 @@ public class MovieContract  {
         }
 
     }
+
+    public static final String[] PROJ_MOVIE_LIST_PROJECTION = {
+            MovieEntry._ID,
+            MovieEntry.COLUMN_MOVIE_ID,
+            MovieEntry.COLUMN_POSTER
+    };
+
+    public static final String[] PROJ_MOVIE_LIST_DETAILS = {
+            MovieEntry._ID,
+            MovieEntry.COLUMN_MOVIE_ID,
+            MovieEntry.COLUMN_TITLE,
+            MovieEntry.COLUMN_POSTER,
+            MovieEntry.COLUMN_VOTEAVERANGE,
+            MovieEntry.COLUMN_DATE
+    };
 }

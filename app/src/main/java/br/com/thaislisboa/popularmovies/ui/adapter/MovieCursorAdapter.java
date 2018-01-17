@@ -19,7 +19,6 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
 
     private Cursor mCursor;
     private Context mContext;
-    private Object context;
 
     public MovieCursorAdapter(Context mContext){
         this.mContext = mContext;
@@ -45,30 +44,54 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
        mCursor.moveToPosition(position);
 
         // Get the id index
-       int idIndex = mCursor.getColumnIndex(MovieContract.MovieEntry._ID);
-       int id = mCursor.getInt(idIndex);
+       final int idIndex = mCursor.getColumnIndex(MovieContract.MovieEntry._ID);
+       final int id = mCursor.getInt(idIndex);
 
         // Get the poster column index
         int columnIndex = mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER);
         // Based on the index, get the real data
         String poster = mCursor.getString(columnIndex);
 
-        Picasso.with(this.mContext).load(poster).into(holder.posterImageView);
+        Picasso.with(mContext).load(poster).into(holder.posterImageView);
 
         holder.itemView.setTag(id);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMovieDetails(id);
+            }
+        });
+    }
+
+    private void showMovieDetails(int movieId) {
+
+        // 1 - Pegar o content resolver
+
+        // 2 - chamar o metodo query com a projecao COMPLETA, passando o id do filme como argumentos.
+
+        // 3 - Com o cursor de resultado, pegar os detalhes do filme
+
+        // 4 - colocar os detalhes em um objeto Movie()
+
+        // 5 - enviar esse movie dentro de um intent para a ativide de detalhes
+
+        // 6 - Se preparar para o -3 com o pretinho.
     }
 
     @Override
     public int getItemCount() {
-        if(mCursor == null){
+        if (mCursor == null){
             return 0;
         }
 
         return mCursor.getCount();
     }
+
     // check if this cursor is the same as the previous cursor (mCursor)
     public Cursor swapCursor(Cursor c){
-        if( mCursor == c){
+
+        if (mCursor == c){
             return null;
         }
 
@@ -77,7 +100,7 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
 
         //check if this is a valid cursor, then update the cursor
 
-        if(c != null){
+        if (c != null){
             this.notifyDataSetChanged();
         }
         return temp;

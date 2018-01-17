@@ -26,29 +26,8 @@ import br.com.thaislisboa.popularmovies.ui.adapter.MovieCursorAdapter;
 public class FavoriteMoviesActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-
-    public static final String[] MOVIE_LIST_PROJECTION = {
-            MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
-            MovieContract.MovieEntry.COLUMN_POSTER
-    };//definir apenas o poster e o id
-    public static final String[] MOVIE_LIST_DETAILS = {
-            MovieContract.MovieEntry._ID,
-            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
-            MovieContract.MovieEntry.COLUMN_TITLE,
-            MovieContract.MovieEntry.COLUMN_POSTER,
-            MovieContract.MovieEntry.COLUMN_VOTEAVERANGE,
-            MovieContract.MovieEntry.COLUMN_DATE
-
-    };
-    public static final int INDEX_MOVIE_ID = 0;
-    public static final int COLUMN_TITLE = 1;
-    public static final int COLUMN_POSTER = 2;
-    public static final int COLUMN_VOTEAVERANGE = 3;
-    public static final int COLUMN_DATE = 4;
     private static final int ID_MOVIE_LOADER = 20;
-    private static final int ID_MOVIE_DETAILS = 10;
-    private final String TAG = FavoriteMoviesActivity.class.getSimpleName();
+
     private MovieCursorAdapter mMovieAdapter;
     private RecyclerView mRecyclerView;
     private int mPosition = RecyclerView.NO_POSITION;
@@ -112,18 +91,16 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
         switch (loaderId) {
             case ID_MOVIE_LOADER:
               /* URI for all rows of weather data in our weather table */
-                Uri moviecQueryUri = MovieContract.MovieEntry.CONTENT_URI;
-
+                Uri movieQueryUri = MovieContract.MovieEntry.CONTENT_URI;
 
                 //String selection = MovieContract.MovieEntry.getSqlSelect();
 
                 return new CursorLoader(this,
-                        moviecQueryUri,
-                        MOVIE_LIST_PROJECTION,
+                        movieQueryUri,
+                        MovieContract.PROJ_MOVIE_LIST_PROJECTION,
                         null,
                         null,
                         null);
-
 
             default:
                 throw new RuntimeException("Loader not implemented:" + loaderId);
