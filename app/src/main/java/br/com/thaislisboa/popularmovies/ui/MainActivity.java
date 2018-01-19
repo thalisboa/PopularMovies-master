@@ -185,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < results.length(); i++) {
                         json = results.getJSONObject(i);
                         movie = new Movie(json.getLong("id"),
-                                json.getBoolean("video"),
                                 json.getDouble("vote_average"),
                                 json.getString("title"),
                                 json.getString("poster_path"),

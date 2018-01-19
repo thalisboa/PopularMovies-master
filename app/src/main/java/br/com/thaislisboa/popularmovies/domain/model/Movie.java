@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Movie implements Serializable {
     private long id;
-    private boolean video;
+
     private double voteAverage;
     private String title;
     private String poster;
@@ -15,10 +15,13 @@ public class Movie implements Serializable {
     private ArrayList<Trailer> trailers;
     public ArrayList<Review> reviews;
 
-    public Movie(long id, boolean video, double voteAverage,
+    public Movie() {
+
+    }
+
+    public Movie(long id, double voteAverage,
                  String title, String poster, String backdrop, String overview, String date) {
         this.id = id;
-        this.video = video;
         this.voteAverage = voteAverage;
         this.title = title;
         this.poster = poster;
@@ -31,10 +34,6 @@ public class Movie implements Serializable {
 
     public long getId() {
         return id;
-    }
-
-    public boolean isVideo() {
-        return video;
     }
 
     public double getVoteAverage() {
@@ -112,7 +111,6 @@ public class Movie implements Serializable {
     @Override
     public String toString() {
         return "Movie{" + "id=" + id +
-                ", video=" + video +
                 ", voteAverage=" + voteAverage +
                 ", title='" + title + '\'' +
                 ", poster='" + poster + '\'' +
@@ -157,5 +155,33 @@ public class Movie implements Serializable {
 
     public int getReviewsSize() {
         return getReviews().size();
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public void setBackdrop(String backdrop) {
+        this.backdrop = backdrop;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

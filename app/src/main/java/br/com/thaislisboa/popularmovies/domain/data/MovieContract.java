@@ -16,7 +16,6 @@ public class MovieContract  {
 
     public static final class MovieEntry implements BaseColumns {
 
-        //* This is the {@link Uri} used to get a full list of terms and definitions.
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIES).build();
@@ -38,20 +37,11 @@ public class MovieContract  {
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_POSTER = "poster";
         public static final String COLUMN_VOTEAVERANGE = "vote";
+        public static final String COLUMN_OVERVIEW = "overview";
         public static final String COLUMN_DATE = "date";
 
 
-
-        //This is an array containing all the column headers in the terms table.
-        public static final String[] COLUMNS =
-                {COLUMN_MOVIE_ID, COLUMN_TITLE, COLUMN_POSTER,COLUMN_VOTEAVERANGE,COLUMN_DATE };
-
-
-        // This method creates a {@link Uri} for a single term, referenced by id.
-        //@param id The id of the term.
-        //     * @return The Uri with the appended id.
-
-        public static Uri buildTermUriWithId(long id) {
+        public static Uri buildMovieUriWithId(int id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
@@ -69,6 +59,7 @@ public class MovieContract  {
             MovieEntry.COLUMN_TITLE,
             MovieEntry.COLUMN_POSTER,
             MovieEntry.COLUMN_VOTEAVERANGE,
+            MovieEntry.COLUMN_OVERVIEW,
             MovieEntry.COLUMN_DATE
     };
 }

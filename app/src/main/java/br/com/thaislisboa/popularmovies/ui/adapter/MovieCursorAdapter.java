@@ -1,7 +1,9 @@
 package br.com.thaislisboa.popularmovies.ui.adapter;
 
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,39 +15,38 @@ import com.squareup.picasso.Picasso;
 
 import br.com.thaislisboa.popularmovies.R;
 import br.com.thaislisboa.popularmovies.domain.data.MovieContract;
+import br.com.thaislisboa.popularmovies.domain.model.Movie;
+import br.com.thaislisboa.popularmovies.ui.MovieDetailActivity;
 
 
-public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.MovieViewHolder> {
+public abstract class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.MovieViewHolder> {
 
     private Cursor mCursor;
     private Context mContext;
 
-    public MovieCursorAdapter(Context mContext){
+    public MovieCursorAdapter(Context mContext) {
         this.mContext = mContext;
 
     }
-
-    //param holder The ViewHolder to bind Cursor data to
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.movie_item_view, parent,false);
+                .inflate(R.layout.movie_item_view, parent, false);
 
         return new MovieViewHolder(view);
     }
 
+    @Override
+    public void onBindViewHolder(MovieCursorAdapter.MovieViewHolder holder, int position) {
 
-   @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
-
-       // get to the right location in the cursor
-       mCursor.moveToPosition(position);
+        // get to the right location in the cursor
+        mCursor.moveToPosition(position);
 
         // Get the id index
-       final int idIndex = mCursor.getColumnIndex(MovieContract.MovieEntry._ID);
-       final int id = mCursor.getInt(idIndex);
+        final int idIndex = mCursor.getColumnIndex(MovieContract.MovieEntry._ID);
+        final int id = mCursor.getInt(idIndex);
 
         // Get the poster column index
         int columnIndex = mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER);
@@ -64,24 +65,52 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
         });
     }
 
+
     private void showMovieDetails(int movieId) {
 
         // 1 - Pegar o content resolver
 
+        ContentResolver resolver = mContext.getContentResolver();
+
         // 2 - chamar o metodo query com a projecao COMPLETA, passando o id do filme como argumentos.
 
-        // 3 - Com o cursor de resultado, pegar os detalhes do filme
+        Cursor cursor = resolver.query(MovieContract.MovieEntry.buildMovieUriWithId(movieId),
+                MovieContract.PROJ_MOVIE_LIST_DETAILS, null, null, null);
 
+        // 3 - Com o cursor de resultado, pegar os detalhes do filme
         // 4 - colocar os detalhes em um objeto Movie()
 
-        // 5 - enviar esse movie dentro de um intent para a ativide de detalhes
+        if (cursor != null) {
 
-        // 6 - Se preparar para o -3 com o pretinho.
+            cursor.moveToFirst();
+
+            Movie movie = new Movie();
+
+            String poster = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER));
+            String date = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_DATE));
+            String title = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE));
+            String overview = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_OVERVIEW));
+            double vote = cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_VOTEAVERANGE));
+
+            movie.setId(movieId);
+            movie.setPoster(poster);
+            movie.setDate(date);
+            movie.setTitle(title);
+            movie.setOverview(overview);
+            movie.setVoteAverage(vote);
+
+            cursor.close();
+
+            // 5 - enviar esse movie dentro de um intent para a ativide de detalhes
+            Intent intent = new Intent(mContext, MovieDetailActivity.class);
+            intent.putExtra("movie", movie);
+            mContext.startActivity(intent);
+        }
     }
 
     @Override
     public int getItemCount() {
-        if (mCursor == null){
+        if (mCursor == null) {
             return 0;
         }
 
@@ -89,9 +118,9 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
     }
 
     // check if this cursor is the same as the previous cursor (mCursor)
-    public Cursor swapCursor(Cursor c){
+    public Cursor swapCursor(Cursor c) {
 
-        if (mCursor == c){
+        if (mCursor == c) {
             return null;
         }
 
@@ -100,7 +129,7 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
 
         //check if this is a valid cursor, then update the cursor
 
-        if (c != null){
+        if (c != null) {
             this.notifyDataSetChanged();
         }
         return temp;
@@ -118,4 +147,5 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
         }
     }
 }
+
 
