@@ -63,10 +63,11 @@ public class MovieContentProvider extends ContentProvider {
                         null);
                 break;
             case MOVIE_WITH_ID:  //details of movie
+                String id = uri.getLastPathSegment();
                 retCursor = db.query(MovieContract.MovieEntry.MOVIE_TABLE,
                         projection,
-                        selection,
-                        selectionArgs,
+                        MovieContract.MovieEntry._ID + " = ? ",
+                        new String[] {id},
                         null,
                         null,
                         sortOrder);

@@ -19,7 +19,7 @@ import br.com.thaislisboa.popularmovies.domain.model.Movie;
 import br.com.thaislisboa.popularmovies.ui.MovieDetailActivity;
 
 
-public abstract class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.MovieViewHolder> {
+public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.MovieViewHolder> {
 
     private Cursor mCursor;
     private Context mContext;
@@ -53,7 +53,8 @@ public abstract class MovieCursorAdapter extends RecyclerView.Adapter<MovieCurso
         // Based on the index, get the real data
         String poster = mCursor.getString(columnIndex);
 
-        Picasso.with(mContext).load(poster).into(holder.posterImageView);
+        String posterURL = Movie.getPosterURL(poster);
+        Picasso.with(mContext).load(posterURL).into(holder.posterImageView);
 
         holder.itemView.setTag(id);
 
@@ -66,7 +67,7 @@ public abstract class MovieCursorAdapter extends RecyclerView.Adapter<MovieCurso
     }
 
 
-    private void showMovieDetails(int movieId) {
+    private void showMovieDetails(int id) {
 
         // 1 - Pegar o content resolver
 
@@ -74,7 +75,7 @@ public abstract class MovieCursorAdapter extends RecyclerView.Adapter<MovieCurso
 
         // 2 - chamar o metodo query com a projecao COMPLETA, passando o id do filme como argumentos.
 
-        Cursor cursor = resolver.query(MovieContract.MovieEntry.buildMovieUriWithId(movieId),
+        Cursor cursor = resolver.query(MovieContract.MovieEntry.buildMovieUriWithId(id),
                 MovieContract.PROJ_MOVIE_LIST_DETAILS, null, null, null);
 
         // 3 - Com o cursor de resultado, pegar os detalhes do filme
@@ -86,13 +87,14 @@ public abstract class MovieCursorAdapter extends RecyclerView.Adapter<MovieCurso
 
             Movie movie = new Movie();
 
+            long movieId = cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID));
             String poster = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER));
             String date = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_DATE));
             String title = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE));
             String overview = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_OVERVIEW));
             double vote = cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_VOTEAVERANGE));
 
-            movie.setId(movieId);
+            movie.setMovieId(movieId);
             movie.setPoster(poster);
             movie.setDate(date);
             movie.setTitle(title);

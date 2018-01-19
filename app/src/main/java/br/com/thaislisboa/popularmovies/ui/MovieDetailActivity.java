@@ -54,7 +54,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         //ImageView mStar = findViewById(R.id.iv_star);
 
         mTitle.setText(movie.getTitle());
-        Picasso.with(this).load(movie.getPoster()).into(mPicture);
+        String posterURL = Movie.getPosterURL(movie.getPosterPath());
+        Picasso.with(this).load(posterURL).into(mPicture);
         mDetails.setText(movie.getOverview());
         mYear.setText(movie.getYear());
 
@@ -92,9 +93,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         // Put the movie's details inside the ContentValues
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getMovieId());
         contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_POSTER, movie.getPoster());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_DATE, movie.getDate());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_VOTEAVERANGE, movie.getVoteAverage());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_POSTER, movie.getPosterPath());
 
         // Get my provider via ContentResolver and CONTENT_URI
 
@@ -126,7 +130,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         protected Movie doInBackground(Movie... movies) {
 
             try {
-                URL url = new URL(Uri.parse("http://api.themoviedb.org/3/movie/" + movies[0].getId() + "/videos")
+                URL url = new URL(Uri.parse("http://api.themoviedb.org/3/movie/" + movies[0].getMovieId() + "/videos")
                         .buildUpon()
                         .appendQueryParameter("api_key", appKey)
                         .build().toString());
@@ -180,7 +184,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             try {
                 URL url;
-                String urls = "http://api.themoviedb.org/3/movie/" + movie.getId() + "/reviews";
+                String urls = "http://api.themoviedb.org/3/movie/" + movie.getMovieId() + "/reviews";
 
                 url = new URL(Uri.parse(urls)
                         .buildUpon()

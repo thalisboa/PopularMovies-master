@@ -226,7 +226,8 @@ public class MainActivity extends AppCompatActivity {
 
             final Movie movie = movies.get(position);
 
-            Picasso.with(MainActivity.this).load(movie.getPoster()).into(holder.mImageView);
+            String posterURL = Movie.getPosterURL(movie.getPosterPath());
+            Picasso.with(MainActivity.this).load(posterURL).into(holder.mImageView);
 
             holder.mImageView.setOnClickListener(e -> {
                 Intent i = new Intent(MainActivity.this, MovieDetailActivity.class);

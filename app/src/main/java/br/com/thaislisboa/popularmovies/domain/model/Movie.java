@@ -12,8 +12,8 @@ public class Movie implements Serializable {
     private String backdrop;
     private String overview;
     private String date;
-    private ArrayList<Trailer> trailers;
-    public ArrayList<Review> reviews;
+    private ArrayList<Trailer> trailers = new ArrayList<>();
+    public ArrayList<Review> reviews = new ArrayList<>();
 
     public Movie() {
 
@@ -32,7 +32,7 @@ public class Movie implements Serializable {
         this.reviews = new ArrayList<>();
     }
 
-    public long getId() {
+    public long getMovieId() {
         return id;
     }
 
@@ -48,12 +48,12 @@ public class Movie implements Serializable {
         return title;
     }
 
-    public String getPoster() {
-        return "http://image.tmdb.org/t/p/w780/".concat(poster);
+    public String getPosterPath() {
+        return poster;
     }
 
-    public String getBackdrop() {
-        return "http://image.tmdb.org/t/p/w342/".concat(backdrop);
+    public static String getPosterURL(String posterPath) {
+        return "http://image.tmdb.org/t/p/w780/".concat(posterPath);
     }
 
     public String getOverview() {
@@ -103,7 +103,7 @@ public class Movie implements Serializable {
     }
 
     public int getTrailersSize() {
-
+        if (getTrailers() == null) return 0;
         return getTrailers().size();
     }
 
@@ -154,10 +154,11 @@ public class Movie implements Serializable {
 
 
     public int getReviewsSize() {
+        if (getReviews() == null) return 0;
         return getReviews().size();
     }
 
-    public void setId(long id) {
+    public void setMovieId(long id) {
         this.id = id;
     }
 
