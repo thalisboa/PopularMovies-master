@@ -8,12 +8,12 @@
         android:id="@+id/iv_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="14dp"
         android:layout_gravity="center"
-        android:paddingTop="4dp"
         android:contentDescription="play trailers"
-        android:src="@android:drawable/ic_media_play"
-        android:paddingStart="20dp"/>
+        android:paddingBottom="14dp"
+        android:paddingStart="20dp"
+        android:paddingTop="4dp"
+        android:src="@android:drawable/ic_media_play" />
 
 
     <TextView

@@ -1,7 +1,9 @@
 package br.com.thaislisboa.popularmovies.ui;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,10 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
@@ -41,10 +44,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail_view);
 
-
         movie = (Movie) getIntent().getSerializableExtra("movie");
 
-        // movie.addTrailer("Teste1", "");
 
         TextView mTitle = findViewById(R.id.title);
         ImageView mPicture = findViewById(R.id.iv_picture);
@@ -60,6 +61,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         mYear.setText(movie.getYear());
 
         mGrade.setText(movie.getGrade());
+        ToggleButton toggle = findViewById(R.id.favorite);
 
         mRecyclerViewTrailer = findViewById(R.id.rv_trailers);
         mRecyclerViewReview = findViewById(R.id.rv_reviews);
@@ -81,40 +83,87 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
 
 
+        boolean isFavorite = isMovieFavorite(movie.getMovieId());
+        toggle.setChecked(isFavorite);
+
+
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+
+                    boolean isSuccess = addMovieToFavorites();
+                    if (isSuccess) {
+
+                        Toast.makeText(MovieDetailActivity.this, "Added to favorites!",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        Toast.makeText(MovieDetailActivity.this, "Couldn't add to favorites!",
+                                Toast.LENGTH_SHORT).show();
+                        buttonView.setChecked(false);
+                    }
+                } else {
+
+                    boolean isSuccess = removeFromFavorites();
+                    if (isSuccess) {
+
+                        Toast.makeText(MovieDetailActivity.this, "Removed from favorites!",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        Toast.makeText(MovieDetailActivity.this, "Couldn't remove from favorites!",
+                                Toast.LENGTH_SHORT).show();
+                        buttonView.setChecked(true);
+                    }
+                }
+            }
+        });
+
         new TrailerAsyncTask().execute(movie);
         new ReviewAsyncTask().execute(movie);
     }
 
+    private boolean removeFromFavorites() {
 
-    public void addMovieToFavorites(View view) {
+        ContentResolver contentResolver = getContentResolver();
 
-        movie = (Movie) getIntent().getSerializableExtra("movie");
+        if (contentResolver != null) {
+            int rows = contentResolver.delete(MovieContract.MovieEntry
+                    .buildMovieUriWithId(movie.getMovieId()), null, null);
+            return (rows > 0);
+        }
 
-        // Put the movie's details inside the ContentValues
+        return false;
+    }
+
+    public boolean addMovieToFavorites() {
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getMovieId());
+        contentValues.put(MovieContract.MovieEntry._ID, movie.getMovieId());
         contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
         contentValues.put(MovieContract.MovieEntry.COLUMN_DATE, movie.getDate());
         contentValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
         contentValues.put(MovieContract.MovieEntry.COLUMN_VOTEAVERANGE, movie.getVoteAverage());
         contentValues.put(MovieContract.MovieEntry.COLUMN_POSTER, movie.getPosterPath());
 
-        // Get my provider via ContentResolver and CONTENT_URI
 
         Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
 
-        // Call method insert from provider passing the content values
+        return (uri != null);
+    }
 
+    private boolean isMovieFavorite(long id) {
 
-        // if everything is ok, show a toast.
-        if (uri != null) {
-            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.buildMovieUriWithId(id),
+                MovieContract.PROJ_MOVIE_LIST_PROJECTION, null, null, null);
 
-
+        try {
+            return (cursor != null && cursor.moveToFirst());
+        } finally {
+            if (cursor != null) cursor.close();
         }
-        finish();
-
     }
 
     class TrailerAsyncTask extends AsyncTask<Movie, Movie, Movie> {

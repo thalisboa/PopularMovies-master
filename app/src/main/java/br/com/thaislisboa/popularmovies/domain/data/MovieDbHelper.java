@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MovieDbHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "moviesDb.db";
+    private static final String DATABASE_NAME = "movies.db";
     private static final int VERSION = 1;
 
     MovieDbHelper(Context context) {
@@ -20,7 +20,6 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         // Create tasks table (careful to follow SQL formatting rules)
         final String CREATE_TABLE = "CREATE TABLE " + MovieContract.MovieEntry.MOVIE_TABLE + " (" +
                 MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY, " +
-                MovieContract.MovieEntry.COLUMN_MOVIE_ID + " INTEGER, " +
                 MovieContract.MovieEntry.COLUMN_TITLE + " TEXT, " +
                 MovieContract.MovieEntry.COLUMN_OVERVIEW + " TEXT, " +
                 MovieContract.MovieEntry.COLUMN_VOTEAVERANGE + " INTEGER, " +

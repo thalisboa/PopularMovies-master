@@ -2,7 +2,7 @@ package br.com.thaislisboa.popularmovies.domain.model;
 
 import java.io.Serializable;
 
-public class Trailer implements Serializable{
+public class Trailer implements Serializable {
 
     private String name;
     private String keyYouTube;
@@ -12,8 +12,7 @@ public class Trailer implements Serializable{
         this.keyYouTube = keyYouTube;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -21,7 +20,7 @@ public class Trailer implements Serializable{
         return keyYouTube;
     }
 
-    public String getYouTube(){
+    public String getYouTube() {
         return "http://www.youtube.com/watch?v=".concat(getKeyYouTube());
 
     }

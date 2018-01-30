@@ -41,16 +41,14 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
     @Override
     public void onBindViewHolder(MovieCursorAdapter.MovieViewHolder holder, int position) {
 
-        // get to the right location in the cursor
         mCursor.moveToPosition(position);
 
-        // Get the id index
         final int idIndex = mCursor.getColumnIndex(MovieContract.MovieEntry._ID);
         final int id = mCursor.getInt(idIndex);
 
-        // Get the poster column index
         int columnIndex = mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER);
-        // Based on the index, get the real data
+
+
         String poster = mCursor.getString(columnIndex);
 
         String posterURL = Movie.getPosterURL(poster);
@@ -67,19 +65,13 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
     }
 
 
-    private void showMovieDetails(int id) {
-
-        // 1 - Pegar o content resolver
+    private void showMovieDetails(long id) {
 
         ContentResolver resolver = mContext.getContentResolver();
-
-        // 2 - chamar o metodo query com a projecao COMPLETA, passando o id do filme como argumentos.
 
         Cursor cursor = resolver.query(MovieContract.MovieEntry.buildMovieUriWithId(id),
                 MovieContract.PROJ_MOVIE_LIST_DETAILS, null, null, null);
 
-        // 3 - Com o cursor de resultado, pegar os detalhes do filme
-        // 4 - colocar os detalhes em um objeto Movie()
 
         if (cursor != null) {
 
@@ -87,7 +79,7 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
 
             Movie movie = new Movie();
 
-            long movieId = cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID));
+            long movieId = cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry._ID));
             String poster = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER));
             String date = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_DATE));
             String title = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE));
@@ -103,7 +95,7 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
 
             cursor.close();
 
-            // 5 - enviar esse movie dentro de um intent para a ativide de detalhes
+
             Intent intent = new Intent(mContext, MovieDetailActivity.class);
             intent.putExtra("movie", movie);
             mContext.startActivity(intent);
@@ -119,7 +111,6 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
         return mCursor.getCount();
     }
 
-    // check if this cursor is the same as the previous cursor (mCursor)
     public Cursor swapCursor(Cursor c) {
 
         if (mCursor == c) {
@@ -129,7 +120,6 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
         Cursor temp = mCursor;
         this.mCursor = c;
 
-        //check if this is a valid cursor, then update the cursor
 
         if (c != null) {
             this.notifyDataSetChanged();
@@ -137,7 +127,6 @@ public class MovieCursorAdapter extends RecyclerView.Adapter<MovieCursorAdapter.
         return temp;
     }
 
-    // Called when ViewHolders are created to fill a RecyclerView.
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
 

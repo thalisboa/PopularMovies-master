@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Movie implements Serializable {
+    public ArrayList<Review> reviews = new ArrayList<>();
     private long id;
-
     private double voteAverage;
     private String title;
     private String poster;
@@ -13,7 +13,6 @@ public class Movie implements Serializable {
     private String overview;
     private String date;
     private ArrayList<Trailer> trailers = new ArrayList<>();
-    public ArrayList<Review> reviews = new ArrayList<>();
 
     public Movie() {
 
@@ -32,12 +31,24 @@ public class Movie implements Serializable {
         this.reviews = new ArrayList<>();
     }
 
+    public static String getPosterURL(String posterPath) {
+        return "http://image.tmdb.org/t/p/w780/".concat(posterPath);
+    }
+
     public long getMovieId() {
         return id;
     }
 
+    public void setMovieId(long id) {
+        this.id = id;
+    }
+
     public double getVoteAverage() {
         return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
     public String getGrade() {
@@ -48,20 +59,28 @@ public class Movie implements Serializable {
         return title;
     }
 
-    public String getPosterPath() {
-        return poster;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public static String getPosterURL(String posterPath) {
-        return "http://image.tmdb.org/t/p/w780/".concat(posterPath);
+    public String getPosterPath() {
+        return poster;
     }
 
     public String getOverview() {
         return overview;
     }
 
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
     public String getDate() {
         return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getYear() {
@@ -72,7 +91,6 @@ public class Movie implements Serializable {
     public void addTrailer(String name, String keyYouTube) {
         getTrailers().add(new Trailer(name, keyYouTube));
     }
-
 
     public String getTrailerYoutube(int position) {
         Trailer t = getTrailers().get(position);
@@ -107,7 +125,6 @@ public class Movie implements Serializable {
         return getTrailers().size();
     }
 
-
     @Override
     public String toString() {
         return "Movie{" + "id=" + id +
@@ -119,9 +136,6 @@ public class Movie implements Serializable {
                 ", date='" + date + '\'' +
                 '}';
     }
-
-
-//review
 
     public ArrayList<Review> getReviews() {
         return reviews;
@@ -152,37 +166,12 @@ public class Movie implements Serializable {
         }
     }
 
-
     public int getReviewsSize() {
         if (getReviews() == null) return 0;
         return getReviews().size();
     }
 
-    public void setMovieId(long id) {
-        this.id = id;
-    }
-
-    public void setVoteAverage(double voteAverage) {
-        this.voteAverage = voteAverage;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public void setPoster(String poster) {
         this.poster = poster;
-    }
-
-    public void setBackdrop(String backdrop) {
-        this.backdrop = backdrop;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 }

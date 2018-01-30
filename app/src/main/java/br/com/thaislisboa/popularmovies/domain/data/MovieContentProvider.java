@@ -43,31 +43,31 @@ public class MovieContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
-        // COMPLETED (1) Get access to underlying database (read-only for query)
+
         final SQLiteDatabase db = mMovieDbHelper.getReadableDatabase();
 
-        // COMPLETED (2) Write URI match code and set a variable to return a Cursor
+
         int match = sUriMatcher.match(uri);
         Cursor retCursor;
 
-        // COMPLETED (3) Query for the tasks directory and write a default case
+
         switch (match) {
-            // Query for the tasks directory
+
             case MOVIES:
                 retCursor = db.query(MovieContract.MovieEntry.MOVIE_TABLE,
-                        projection, //filter columns -> pegar o ID e o Poster
+                        projection,
                         selection,
                         selectionArgs,
                         null,
                         null,
                         null);
                 break;
-            case MOVIE_WITH_ID:  //details of movie
+            case MOVIE_WITH_ID:
                 String id = uri.getLastPathSegment();
                 retCursor = db.query(MovieContract.MovieEntry.MOVIE_TABLE,
                         projection,
                         MovieContract.MovieEntry._ID + " = ? ",
-                        new String[] {id},
+                        new String[]{id},
                         null,
                         null,
                         sortOrder);
@@ -76,10 +76,10 @@ public class MovieContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        // COMPLETED (4) Set a notification URI on the Cursor and return that Cursor
+
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
 
-        // Return the desired Cursor
+
         return retCursor;
     }
 
@@ -123,7 +123,7 @@ public class MovieContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        //notify the resolver if the uri has been changed
+
         getContext().getContentResolver().notifyChange(uri, null);
 
         return returnUri;
@@ -131,7 +131,30 @@ public class MovieContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+
+        int numberRows;
+
+        switch (sUriMatcher.match(uri)) {
+
+            case MOVIE_WITH_ID:
+                String id = uri.getLastPathSegment();
+                numberRows = mMovieDbHelper.getWritableDatabase().delete(
+                        MovieContract.MovieEntry.MOVIE_TABLE,
+                        MovieContract.MovieEntry._ID + " = ?",
+                        new String[]{id});
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (numberRows != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+
+        return numberRows;
     }
 
     @Override

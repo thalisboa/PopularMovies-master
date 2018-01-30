@@ -17,7 +17,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     private Movie mMovie = null;
 
-    public TrailerAdapter(@NonNull  Movie movie) {
+    public TrailerAdapter(@NonNull Movie movie) {
         this.mMovie = movie;
     }
 

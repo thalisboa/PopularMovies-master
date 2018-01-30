@@ -55,7 +55,6 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
 
         mMovieAdapter = new MovieCursorAdapter(this);
 
-          /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mRecyclerView.setAdapter((mMovieAdapter));
 
         showLoading();
@@ -69,7 +68,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
     private void showLoading() {
 
         mRecyclerView.setVisibility(View.INVISIBLE);
-         /* Finally, show the loading indicator */
+
         mRecyclerView.setVisibility(View.VISIBLE);
 
     }
@@ -90,10 +89,9 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
 
         switch (loaderId) {
             case ID_MOVIE_LOADER:
-              /* URI for all rows of weather data in our weather table */
+
                 Uri movieQueryUri = MovieContract.MovieEntry.CONTENT_URI;
 
-                //String selection = MovieContract.MovieEntry.getSqlSelect();
 
                 return new CursorLoader(this,
                         movieQueryUri,
@@ -144,7 +142,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        // order it by most popular
+
         if (id == R.id.action1) {
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra(MainActivity.KEY_SORT_ORDER, MainActivity.SORT_POPULAR);
@@ -152,7 +150,6 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
             return true;
         }
 
-        // order it by top rated
         if (id == R.id.action2) {
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra(MainActivity.KEY_SORT_ORDER, MainActivity.SORT_TOP_RATED);

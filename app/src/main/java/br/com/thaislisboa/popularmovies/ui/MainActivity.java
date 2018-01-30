@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected List<Movie> doInBackground(String... strings) {
 
-           try {
+            try {
 
                 URL url = new URL(Uri.parse("http://api.themoviedb.org/3/movie/" + strings[0])
                         .buildUpon()
@@ -230,6 +230,8 @@ public class MainActivity extends AppCompatActivity {
             Picasso.with(MainActivity.this).load(posterURL).into(holder.mImageView);
 
             holder.mImageView.setOnClickListener(e -> {
+
+                //fazer os if se o id do movie for igual aos ids da activity favorite, aparecer toast e nao adicionar
                 Intent i = new Intent(MainActivity.this, MovieDetailActivity.class);
                 i.putExtra("movie", movie);
                 startActivity(i);
