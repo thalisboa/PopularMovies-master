@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Movie implements Serializable {
-    public ArrayList<Review> reviews = new ArrayList<>();
+
     private long id;
     private double voteAverage;
     private String title;
@@ -12,6 +12,8 @@ public class Movie implements Serializable {
     private String backdrop;
     private String overview;
     private String date;
+
+    private ArrayList<Review> reviews = new ArrayList<>();
     private ArrayList<Trailer> trailers = new ArrayList<>();
 
     public Movie() {

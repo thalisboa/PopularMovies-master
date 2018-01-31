@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,8 @@ import br.com.thaislisboa.popularmovies.ui.adapter.ReviewAdapter;
 import br.com.thaislisboa.popularmovies.ui.adapter.TrailerAdapter;
 
 public class MovieDetailActivity extends AppCompatActivity {
+
+    private static final String STATE_KEY_MOVIE = "current_movie";
 
     private Movie movie;
     private RecyclerView mRecyclerViewTrailer, mRecyclerViewReview;
@@ -121,8 +124,21 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         });
 
-        new TrailerAsyncTask().execute(movie);
-        new ReviewAsyncTask().execute(movie);
+        if ((savedInstanceState != null) && savedInstanceState.containsKey(STATE_KEY_MOVIE)) {
+            movie = (Movie) savedInstanceState.getSerializable(STATE_KEY_MOVIE);
+        }
+        else {
+            new TrailerAsyncTask().execute(movie);
+            new ReviewAsyncTask().execute(movie);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
+        // Save the movie to restore it later
+        outState.putSerializable(STATE_KEY_MOVIE, movie);
     }
 
     private boolean removeFromFavorites() {
@@ -197,6 +213,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                     JSONObject json = new JSONObject(content.toString());
                     JSONArray results = json.getJSONArray("results");
 
+                    // First clear the current trailers
+                    movie.getTrailers().clear();;
 
                     for (int i = 0; i < results.length(); i++) {
                         json = results.getJSONObject(i);
@@ -254,6 +272,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                         JSONObject json = new JSONObject(content.toString());
                         JSONArray results = json.getJSONArray("results");
 
+                        // First clear the current reviews
+                        movie.getReviews().clear();
 
                         for (int i = 0; i < results.length(); i++) {
                             json = results.getJSONObject(i);
