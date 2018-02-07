@@ -9,7 +9,7 @@
     <string name="minutes">120min</string>
     <string name="reviews">Reviews:</string>
     <string name="favorite">Added to Favorite</string>
-    <string name="favoriteNotOk">Unfavorite</string>
+    <string name="favoriteNotOk">Add To Favorite</string>
     <string name="title">Title</string>
     <string name="trailers">Trailers:</string>
 </resources>

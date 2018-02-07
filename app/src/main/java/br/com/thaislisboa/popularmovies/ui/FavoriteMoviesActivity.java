@@ -34,16 +34,14 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
 
     private ProgressBar mLoadingIndicator;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view);
         getSupportActionBar().setElevation(0f);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
+        mRecyclerView = findViewById(R.id.rv_main);
+        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
         mRecyclerView = findViewById(R.id.rv_main);
         int spanCount = getResources().getConfiguration().orientation;
@@ -59,30 +57,13 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
 
         showLoading();
 
-
         getSupportLoaderManager().initLoader(ID_MOVIE_LOADER, null, this);
-
     }
-
 
     private void showLoading() {
-
         mRecyclerView.setVisibility(View.INVISIBLE);
-
         mRecyclerView.setVisibility(View.VISIBLE);
-
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
@@ -102,7 +83,6 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
 
             default:
                 throw new RuntimeException("Loader not implemented:" + loaderId);
-
         }
     }
 
@@ -110,10 +90,6 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         mMovieAdapter.swapCursor(data);
-
-        if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
-
-        mRecyclerView.smoothScrollToPosition(mPosition);
 
         if (data.getCount() != 0) showMovieDataView();
     }
@@ -158,10 +134,5 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements
         }
 
         return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }
